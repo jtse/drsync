@@ -12,12 +12,16 @@ sudo mv drsync /usr/local/bin
 ```
 
 Usage
-------
+-----
 Go to your project folder and run:
 
 ```
 drsync
 ```
+
+Advanced Usage
+--------------
+Review the generated ```.drsync``` file.
 
 Requirements
 ------------
