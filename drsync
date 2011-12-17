@@ -1,0 +1,88 @@
+#!/bin/bash
+set -o nounset
+set -o errexit
+
+############
+# Defaults #
+############
+local_drupal_root=public
+remote_drupal_root=web
+db_dump_file=drupal-$USER-$HOSTNAME.mysql
+
+#############
+# Functions #
+#############
+function config() {
+	input "Configure rsync? [y/N]" RESPONSE
+	if [ "$RESPONSE" != "y" ] ; then
+		abort
+	fi
+
+	input "ssh host" ssh_host
+	input "ssh username" ssh_user
+	input "ssh password" ssh_password
+
+	echo -e "# Created by drsync on $(date)\n\
+ssh_host=$ssh_host\n\
+ssh_user=$ssh_user\n\
+ssh_password=$ssh_password\n\
+"> .drsync
+
+	echo "Saved configuration to '.drsync'"
+	echo "Run 'drsync' again to perform sync"
+}
+
+function input() {
+	local message=$1
+	local var=$2
+	read -p "$message: " $var
+	if [ ! ${!var} ]; then
+		abort
+	fi	
+}
+
+function abort() {
+	echo "Aborted."
+	exit 1
+}
+
+function remote() {
+	local cmd=$1
+	expect-password "ssh $ssh_user@$ssh_host $cmd"
+}
+
+function expect-password() {
+	local cmd=$1
+	expect -c "spawn $cmd; expect password; send $ssh_password\n; interact"
+}
+
+########
+# Main #
+########
+[ -f ".drsync" ] || config
+
+source .drsync
+
+echo "Creating local database dump file..."
+drush sql-dump --root=$PWD/$local_drupal_root --result-file=$PWD/tmp/$db_dump_file
+echo ""
+
+echo "Creating remote database dump file..."
+remote 'drush sql-dump --root=`printenv PWD`/'$remote_drupal_root' --result-file=`printenv PWD`/tmp/'$db_dump_file
+echo ""
+
+echo "Syncing remote database dump file to local..."
+expect-password "rsync -z --compress-level=9 --inplace -e ssh $ssh_user@$ssh_host:tmp/$db_dump_file tmp/$db_dump_file"
+echo ""
+
+echo "Loading sync'd database dump file..."
+`drush sql-connect --root=$PWD/$local_drupal_root` < tmp/$db_dump_file
+drush --root=$PWD/$local_drupal_root cc all
+echo ""
+
+echo "Syncing remote assets to local..."
+expect-password "rsync -avz --compress-level=9 -e ssh $ssh_user@$ssh_host:$remote_drupal_root/sites/default/files/ $local_drupal_root/sites/default/files/"
+echo ""
+
+echo "Woohoo! All done."
+
