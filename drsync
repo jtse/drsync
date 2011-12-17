@@ -31,7 +31,6 @@ ssh_password=$ssh_password\n\
 "> .drsync
 
 	echo "Saved configuration to '.drsync'"
-	echo "Run 'drsync' again to perform sync"
 }
 
 function input() {

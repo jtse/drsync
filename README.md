@@ -8,6 +8,7 @@ Installation/Update
 curl https://raw.github.com/jtse/drsync/master/drsync > drsync
 chmod 755 drsync
 sudo mv drsync /usr/local/bin
+
 ```
 
 Usage
