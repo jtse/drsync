@@ -1,6 +1,6 @@
 drsync
 =======
-Drupal remote sync script. Bash scripts for synchronizing a remote-to-local Drupal instances.
+Drupal remote sync script. Bash script for synchronizing a remote Drupal to local Drupal instances.
 
 Installation/Update
 --------------------
