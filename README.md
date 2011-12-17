@@ -14,6 +14,7 @@ sudo mv drsync /usr/local/bin
 Usage
 ------
 Go to your project folder and run
+
 ```
 drsync
 ```
@@ -21,9 +22,11 @@ drsync
 Requirements
 ------------
 The following commands must be present on both the remote and local machine
+
 ```
 drush
 bash
 ssh
 rsync
 ```
+
