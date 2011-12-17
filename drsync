@@ -1,4 +1,5 @@
 #!/bin/bash
+# drsync https://github.com/jtse/drsync
 set -o nounset
 set -o errexit
 
@@ -23,6 +24,7 @@ function config() {
 	input "ssh password" ssh_password
 
 	echo -e "# Created by drsync on $(date)\n\
+# https://github.com/jtse/drsync
 ssh_host=$ssh_host\n\
 ssh_user=$ssh_user\n\
 ssh_password=$ssh_password\n\
