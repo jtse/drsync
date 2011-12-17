@@ -8,7 +8,6 @@ set -o errexit
 ############
 local_drupal_root=public
 remote_drupal_root=web
-db_dump_file=drupal-$USER-$HOSTNAME.mysql
 
 #############
 # Functions #
@@ -28,6 +27,12 @@ function config() {
 ssh_host=$ssh_host\n\
 ssh_user=$ssh_user\n\
 ssh_password=$ssh_password\n\
+\n\
+# Relative to this file\n\
+local_drupal_root=$local_drupal_root\n\
+\n\
+# Relative to remote working directory after logging in\n\
+remote_drupal_root=$remote_drupal_root\n\
 "> .drsync
 
 	echo "Saved configuration to '.drsync'"
@@ -63,6 +68,7 @@ function expect-password() {
 [ -f ".drsync" ] || config
 
 source .drsync
+db_dump_file=drupal-$USER-$HOSTNAME.mysql
 
 echo "Creating local database dump file..."
 drush sql-dump --root=$PWD/$local_drupal_root --result-file=$PWD/tmp/$db_dump_file
