@@ -20,12 +20,10 @@ drsync
 
 Requirements
 ------------
-Drush on the remote server
-
-Drush on the local machine
-
+The following commands must be present on both the remote and local machine
+```
+drush
 bash
-
 ssh
-
 rsync
+```
