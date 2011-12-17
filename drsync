@@ -72,26 +72,26 @@ function expect-password() {
 source .drsync
 db_dump_file=drupal-$USER-$HOSTNAME.mysql
 
-echo "Creating local database dump file..."
-drush sql-dump --root=$PWD/$local_drupal_root --result-file=$PWD/tmp/$db_dump_file
+echo "*** Creating local database dump file..."
+drush sql-dump --pipe --root=$PWD/$local_drupal_root --result-file=$PWD/tmp/$db_dump_file
 echo ""
 
-echo "Creating remote database dump file..."
-remote 'drush sql-dump --root=`printenv PWD`/'$remote_drupal_root' --result-file=`printenv PWD`/tmp/'$db_dump_file
+echo "*** Creating remote database dump file..."
+remote 'drush sql-dump --pipe --root=`printenv PWD`/'$remote_drupal_root' --result-file=`printenv PWD`/tmp/'$db_dump_file
 echo ""
 
-echo "Syncing remote database dump file to local..."
+echo "*** Syncing remote database dump file to local..."
 expect-password "rsync -z --compress-level=9 --inplace -e ssh $ssh_user@$ssh_host:tmp/$db_dump_file tmp/$db_dump_file"
 echo ""
 
-echo "Loading sync'd database dump file..."
+echo "*** Loading sync'd dump file into local database..."
 `drush sql-connect --root=$PWD/$local_drupal_root` < tmp/$db_dump_file
-drush --root=$PWD/$local_drupal_root cc all
+drush --pipe --root=$PWD/$local_drupal_root cc all
 echo ""
 
-echo "Syncing remote assets to local..."
+echo "*** Syncing remote assets to local..."
 expect-password "rsync -avz --compress-level=9 -e ssh $ssh_user@$ssh_host:$remote_drupal_root/sites/default/files/ $local_drupal_root/sites/default/files/"
 echo ""
 
-echo "Woohoo! All done."
+echo "*** Done. Woohoo!"
 
