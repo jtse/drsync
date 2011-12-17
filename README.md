@@ -12,6 +12,7 @@ sudo mv drsync /usr/local/bin
 
 Usage
 ------
+Go to your project folder and run
 ```
 drsync
 ```
