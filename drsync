@@ -2,6 +2,7 @@
 # drsync https://github.com/jtse/drsync
 set -o nounset
 set -o errexit
+start_time="$(date +%s)"
 
 ############
 # Defaults #
@@ -93,5 +94,5 @@ echo "*** Syncing remote assets to local..."
 expect-password "rsync -avz --compress-level=9 -e ssh $ssh_user@$ssh_host:$remote_drupal_root/sites/default/files/ $local_drupal_root/sites/default/files/"
 echo ""
 
-echo "*** Done. Woohoo!"
-
+end_time="$(date +%s)"
+echo "*** Done. Woohoo! Elapsed secs: $(expr $end_time - $start_time)"
