@@ -14,7 +14,7 @@ db_dump_file=drupal-$USER-$HOSTNAME.mysql
 # Functions #
 #############
 function config() {
-	input "Configure rsync? [y/N]" RESPONSE
+	input "Configure drsync? [y/N]" RESPONSE
 	if [ "$RESPONSE" != "y" ] ; then
 		abort
 	fi
