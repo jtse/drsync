@@ -5,7 +5,9 @@ Drupal sync scripts. Bash scripts for synchronizing a remote-to-local Drupal ins
 Installation/Update
 --------------------
 ```
-curl https://raw.github.com/jtse/drsync/master/drsync > /usr/local/bin/drsync
+curl https://raw.github.com/jtse/drsync/master/drsync > drsync
+chmod 755 drsync
+sudo mv drsync /usr/local/bin
 ```
 
 Usage
