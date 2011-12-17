@@ -28,14 +28,16 @@ ssh_host=$ssh_host\n\
 ssh_user=$ssh_user\n\
 ssh_password=$ssh_password\n\
 \n\
-# Relative to this file\n\
+# Local Drupal root relative to this file\n\
 local_drupal_root=$local_drupal_root\n\
 \n\
-# Relative to remote working directory after logging in\n\
+# Remote Drupal root relative to the remote working directory after logging in\n\
 remote_drupal_root=$remote_drupal_root\n\
 "> .drsync
 
-	echo "Saved configuration to '.drsync'"
+	echo "Saved configuration to '.drsync'. (You may want to customize it.)"
+	echo "Run 'drsync' to do a Drupal remote sync."
+	exit 1
 }
 
 function input() {
