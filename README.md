@@ -1,6 +1,6 @@
 drsync
 =======
-Drupal remote sync script. Bash script for synchronizing remote Drupal to local Drupal instances.
+Drupal remote sync script. Bash script for synchronizing remote Drupal to local Drupal instances. The script uses rsync to transfer only what has changed.
 
 Installation/Update
 --------------------
@@ -8,7 +8,6 @@ Installation/Update
 curl https://raw.github.com/jtse/drsync/master/drsync > drsync
 chmod 755 drsync
 sudo mv drsync /usr/local/bin
-
 ```
 
 Usage
