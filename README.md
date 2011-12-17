@@ -1,6 +1,6 @@
 drsync
 =======
-Drupal sync scripts. Bash scripts for synchronizing a remote-to-local Drupal instances.
+Drupal remote sync script. Bash scripts for synchronizing a remote-to-local Drupal instances.
 
 Installation/Update
 --------------------
@@ -13,7 +13,7 @@ sudo mv drsync /usr/local/bin
 
 Usage
 ------
-Go to your project folder and run
+Go to your project folder and run:
 
 ```
 drsync
@@ -21,7 +21,7 @@ drsync
 
 Requirements
 ------------
-The following commands must be present on both the remote and local machine
+The following must be present on both the remote and local machine:
 
 ```
 drush
