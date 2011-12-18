@@ -35,5 +35,5 @@ rsync
 
 Limitations
 -----------
-* Does not support ssh key authentication (TODO) -- only password authentication
+* Does not support ssh key authentication -- only password authentication. Use ```drush rsync``` if you need key support.
 * Does not support multisite (TODO) -- only syncs default/files
