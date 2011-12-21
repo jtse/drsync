@@ -27,10 +27,12 @@ Requirements
 The following must be present on both the remote and local machine:
 
 ```
+drupal (running instance)
 drush
 bash
 ssh
 rsync
+openssl (password encryption)
 ```
 
 Limitations
