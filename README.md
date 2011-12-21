@@ -4,6 +4,8 @@ Syncs a remote Drupal site to your local instance via ```rsync``` and ```ssh```.
 
 Installation/Update
 -------------------
+Run these commands:
+
 ```
 curl https://raw.github.com/jtse/drsync/master/drsync > drsync
 chmod 755 drsync
@@ -24,18 +26,19 @@ Review the generated ```.drsync``` file.
 
 Requirements
 ------------
-The following must be present on both the remote and local machine:
+The following commands must be present on both the remote and local machine:
 
 ```
-drupal (running instance)
 drush
 bash
 ssh
 rsync
-openssl (password encryption)
+openssl (for local password encryption/decryption)
 ```
+
+Of course, you need a running instance of Drupal.
 
 Limitations
 -----------
-* Does not support ```ssh``` key authentication -- you should be using ```drush rsync``` if you have key authentication support.
+* Does not support ```ssh``` key authentication -- you should be using ```drush rsync``` if key authentication is available.
 * Does not support multisite (TODO) -- only syncs default/files
