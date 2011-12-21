@@ -61,25 +61,34 @@ function remote() {
 	expect-password "ssh $ssh_user@$ssh_host $cmd"
 }
 
+function set-hash() {
+	local var=$1
+	local string=$2
+	tmp=`echo $string | openssl dgst -sha1`
+	eval ${var}=${tmp/(stdin)= /}
+}
+
 function get-password() {
 	local pass_dir=$HOME/.drsync/pass
 	[ -e $pass_dir ] || mkdir -p $pass_dir
 	chmod 700 $HOME/.drsync
 	chmod 700 $pass_dir
-	local hash=`echo $PWD | openssl dgst -sha1`
-	hash=${hash/(stdin)= /}
-	pass_file=$pass_dir/${hash/(stdin)= /}
+
+	set-hash filename $PWD$ssh_user@$ssh_host
+	pass_file=$pass_dir/$filename
+
+	set-hash key $PWD$USER
 
 	if [ ! -f $pass_file ]; then
 		local pass
-		input "ssh password" pass
-		echo $pass | openssl enc -aes-256-cbc -a -salt -out $pass_file -pass pass:$hash
+		input "ssh password for '$ssh_user@$ssh_host'" pass
+		echo $pass | openssl enc -aes-256-cbc -a -salt -out $pass_file -pass pass:$key
 		echo "*** Saved password to $pass_file"
 	fi
 
 	chmod 600 $pass_file
 	echo "*** Reading password from $pass_file"
-	ssh_password=`openssl enc -aes-256-cbc -a -in $pass_file -pass pass:$hash -d`
+	ssh_password=`openssl enc -aes-256-cbc -a -in $pass_file -pass pass:$key -d`
 }
 
 function expect-password() {
