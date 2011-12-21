@@ -1,6 +1,6 @@
 drsync
 =======
-Syncs remote to local Drupal site via ```rsync``` and ```ssh```. Uses password authentication -- password is saved locally but encrypted. Script is meant to be used on servers without ```ssh``` key authentication.
+Syncs a remote Drupal site to your local instance via ```rsync``` and ```ssh```. Uses password authentication -- password is saved locally but encrypted. This script is meant to be used on unfortunate servers without ```ssh``` key authentication support.
 
 Installation/Update
 -------------------
