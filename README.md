@@ -1,6 +1,6 @@
 drsync
 =======
-Drupal remote sync script. Bash script for synchronizing remote Drupal to local Drupal instances. The script builds upon the shoulders of giants such as ssh, rsync, and drush to efficiently synchronizes Drupal database and files.
+Drupal remote sync script. Bash script for synchronizing remote Drupal to local Drupal instances via rsync over SSH (password authentication). If your server supports SSH keys, you should just use drush rsync.
 
 Installation/Update
 --------------------
