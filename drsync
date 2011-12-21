@@ -14,20 +14,21 @@ remote_drupal_root=web
 # Functions #
 #############
 function config() {
-	input "Configure drsync? [y/N]" RESPONSE
+	input "Configure drsync for $PWD? [y/N]" RESPONSE
 	if [ "$RESPONSE" != "y" ] ; then
 		abort
 	fi
 
 	input "ssh host" ssh_host
 	input "ssh username" ssh_user
-	input "ssh password" ssh_password
 
 	echo -e "# Created by drsync on $(date)\n\
-# https://github.com/jtse/drsync
+# https://github.com/jtse/drsync\n\
+# the ssh host, e.g., myserver.com\n\
 ssh_host=$ssh_host\n\
+\n\
+# the ssh username\n\
 ssh_user=$ssh_user\n\
-ssh_password=$ssh_password\n\
 \n\
 # Local Drupal root relative to this file\n\
 local_drupal_root=$local_drupal_root\n\
@@ -60,6 +61,27 @@ function remote() {
 	expect-password "ssh $ssh_user@$ssh_host $cmd"
 }
 
+function get-password() {
+	local pass_dir=$HOME/.drsync/pass
+	[ -e $pass_dir ] || mkdir -p $pass_dir
+	chmod 700 $HOME/.drsync
+	chmod 700 $pass_dir
+	local hash=`echo $PWD | openssl dgst -sha1`
+	hash=${hash/(stdin)= /}
+	pass_file=$pass_dir/${hash/(stdin)= /}
+
+	if [ ! -f $pass_file ]; then
+		local pass
+		input "ssh password" pass
+		echo $pass | openssl enc -aes-256-cbc -a -salt -out $pass_file -pass pass:$hash
+		echo "*** Saved password to $pass_file"
+	fi
+
+	chmod 700 $pass_file
+	echo "*** Reading password from $pass_file"
+	ssh_password=`openssl enc -aes-256-cbc -a -in $pass_file -pass pass:$hash -d`
+}
+
 function expect-password() {
 	local cmd=$1
 	expect -c "spawn $cmd; expect password; send $ssh_password\n; interact"
@@ -71,6 +93,7 @@ function expect-password() {
 [ -f ".drsync" ] || config
 
 source .drsync
+get-password
 db_dump_file=drupal-$USER-$HOSTNAME.mysql
 
 echo "*** Creating local database dump file..."
@@ -87,6 +110,8 @@ echo ""
 
 echo "*** Loading sync'd dump file into local database..."
 `drush sql-connect --root=$PWD/$local_drupal_root` < tmp/$db_dump_file
+#drush --pipe --root=$PWD/$local_drupal_root vset preprocess_css 0
+#drush --pipe --root=$PWD/$local_drupal_root vset preprocess_js 0 
 drush --pipe --root=$PWD/$local_drupal_root cc all
 echo ""
 

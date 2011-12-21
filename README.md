@@ -3,7 +3,7 @@ drsync
 Drupal remote sync script. Bash script for synchronizing remote Drupal to local Drupal instances via rsync over SSH (password authentication). If your server supports SSH keys, you should just use drush rsync.
 
 Installation/Update
---------------------
+-------------------
 ```
 curl https://raw.github.com/jtse/drsync/master/drsync > drsync
 chmod 755 drsync
@@ -35,5 +35,5 @@ rsync
 
 Limitations
 -----------
-* Does not support ssh key authentication (TODO) -- only password authentication
+* Does not support ssh key authentication -- only password authentication. Use ```drush rsync``` if you need key support.
 * Does not support multisite (TODO) -- only syncs default/files
