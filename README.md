@@ -37,5 +37,5 @@ openssl (password encryption)
 
 Limitations
 -----------
-* Does not support ssh key authentication -- only password authentication. Use ```drush rsync``` if you need key support.
+* Does not support ```ssh``` key authentication -- you should be using ```drush rsync``` if you have key authentication support.
 * Does not support multisite (TODO) -- only syncs default/files
