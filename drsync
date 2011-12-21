@@ -77,7 +77,7 @@ function get-password() {
 		echo "*** Saved password to $pass_file"
 	fi
 
-	chmod 700 $pass_file
+	chmod 600 $pass_file
 	echo "*** Reading password from $pass_file"
 	ssh_password=`openssl enc -aes-256-cbc -a -in $pass_file -pass pass:$hash -d`
 }
