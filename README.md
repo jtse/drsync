@@ -42,3 +42,15 @@ Limitations
 -----------
 * Does not support ```ssh``` key authentication -- you should be using ```drush rsync``` if key authentication is available.
 * Does not support multisite (TODO) -- only syncs default/files
+
+Security
+--------
+The security is only a notch better than storing your passwords in plain-text files.
+
+The passwords are encrypted as follows:
+
+* Passwords are saved into individual files in $HOME/.drsync/pass 
+* Password filenames are a hash of the working directory, ssh user, and ssh host
+* Passwords are encrypted with the decryption key as a hash of the working directory and current user name
+
+Essentially, a cracker with knowledge of openssl encrypt/decrypt commands can steal your passwords if he or she has access to your $HOME/.drsync directory AND the directories of your Drupal projects.
