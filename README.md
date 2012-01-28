@@ -20,6 +20,11 @@ Go to your project folder and run:
 drsync
 ```
 
+Or to log into the sync host via SSH
+```
+drsync ssh
+```
+
 Advanced Usage
 --------------
 Review the generated ```.drsync``` file.

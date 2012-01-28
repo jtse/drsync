@@ -103,6 +103,12 @@ function expect-password() {
 
 source .drsync
 get-password
+
+if [ "$1" = "ssh" ]; then
+	expect-password "ssh $ssh_user@$ssh_host"
+	exit
+fi
+
 db_dump_file=drupal-$USER-$HOSTNAME.mysql
 
 echo "*** Creating local database dump file..."
@@ -119,13 +125,19 @@ echo ""
 
 echo "*** Loading sync'd dump file into local database..."
 `drush sql-connect --root=$PWD/$local_drupal_root` < tmp/$db_dump_file
-#drush --pipe --root=$PWD/$local_drupal_root vset preprocess_css 0
-#drush --pipe --root=$PWD/$local_drupal_root vset preprocess_js 0 
+drush --pipe --root=$PWD/$local_drupal_root vset preprocess_css 0
+drush --pipe --root=$PWD/$local_drupal_root vset preprocess_js 0 
+drush --pipe --root=$PWD/$local_drupal_root cc css+js
 drush --pipe --root=$PWD/$local_drupal_root cc all
 echo ""
 
 echo "*** Syncing remote assets to local..."
 expect-password "rsync -avz --compress-level=9 -e ssh $ssh_user@$ssh_host:$remote_drupal_root/sites/default/files/ $local_drupal_root/sites/default/files/"
+echo ""
+
+echo "*** Adjusting css+js permissions..."
+chmod -R a+rw $local_drupal_root/sites/default/files/css
+chmod -R a+rw $local_drupal_root/sites/default/files/js
 echo ""
 
 end_time="$(date +%s)"
