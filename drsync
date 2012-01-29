@@ -68,15 +68,23 @@ function set-hash() {
 	eval ${var}=${tmp/(stdin)= /}
 }
 
-function get-password() {
+function set-pass-file() {
+  local var=$1
 	local pass_dir=$HOME/.drsync/pass
+  local string
 	[ -e $pass_dir ] || mkdir -p $pass_dir
 	chmod 700 $HOME/.drsync
-	chmod 700 $pass_dir
+  chmod 700 $pass_dir
 
 	set-hash filename $PWD$ssh_user@$ssh_host
-	pass_file=$pass_dir/$filename
+	eval ${var}=$pass_dir/$filename
+}
 
+function get-password() {
+	local key
+	local pass_file
+
+  set-pass-file pass_file
 	set-hash key $PWD$USER
 
 	if [ ! -f $pass_file ]; then
@@ -96,6 +104,22 @@ function expect-password() {
 	expect -c "spawn $cmd; expect password; send $ssh_password\n; interact"
 }
 
+###########
+# Actions #
+###########
+
+function action_ssh() {
+	expect-password "ssh $ssh_user@$ssh_host"
+}
+
+function action_clean() {
+  local pass_file
+	set-pass-file pass_file
+	rm -f $pass_file
+	echo "Removed $pass_file."
+}
+
+
 ########
 # Main #
 ########
@@ -104,9 +128,15 @@ function expect-password() {
 source .drsync
 get-password
 
-if [ "$1" = "ssh" ]; then
-	expect-password "ssh $ssh_user@$ssh_host"
-	exit
+# Check if action specified
+if [ "$1" != "" ]; then
+	if type -t action_$1 >/dev/null; then
+		action_$1
+		exit
+	else
+		echo "No such action $1."
+		exit 1
+	fi
 fi
 
 db_dump_file=drupal-$USER-$HOSTNAME.mysql

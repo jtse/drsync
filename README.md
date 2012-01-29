@@ -20,15 +20,21 @@ Go to your project folder and run:
 drsync
 ```
 
+Advanced Usage
+--------------
+Review the generated ```.drsync``` file.
+
 Or to SSH into the sync host: 
 
 ```
 drsync ssh
 ```
 
-Advanced Usage
---------------
-Review the generated ```.drsync``` file.
+Or to clean up the encrypted password file:
+
+```
+drsync clean
+```
 
 Requirements
 ------------
