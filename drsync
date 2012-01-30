@@ -129,13 +129,15 @@ source .drsync
 get-password
 
 # Check if action specified
-if [ "$1" != "" ]; then
-	if type -t action_$1 >/dev/null; then
-		action_$1
-		exit
-	else
-		echo "No such action $1."
-		exit 1
+if [ $# != 0 ]; then
+	if [ "$1" != "" ]; then
+		if type -t action_$1 >/dev/null; then
+			action_$1
+			exit
+		else
+			echo "No such action $1."
+			exit 1
+		fi
 	fi
 fi
 
