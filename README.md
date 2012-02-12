@@ -36,6 +36,12 @@ Or to ```ls``` on the sync host:
 drsync ssh ls
 ```
 
+Or to ```cp``` on the sync host to your local
+
+```
+drsync cp remote/file local/directory
+```
+
 Or to clean up the encrypted password file:
 
 ```

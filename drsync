@@ -116,6 +116,15 @@ function action_ssh() {
 	fi
 }
 
+function action_cp() {
+	if [ $# != 2 ]; then
+		echo "Usage: cp [remote source] [local destination]"
+		exit 1
+	else
+		expect-password "scp -C $ssh_user@$ssh_host:$1 $2"
+	fi
+}
+
 function action_clean() {
   local pass_file
 	set-pass-file pass_file
