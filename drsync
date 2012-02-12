@@ -136,7 +136,7 @@ get-password
 if [ $# != 0 ]; then
 	if [ "$1" != "" ]; then
 		if type -t action_$1 >/dev/null; then
-			if [ $# > 1 ]; then
+			if [ $# -gt 1 ]; then
 				action_$1 "${@:2}"
 			else
 				action_$1
