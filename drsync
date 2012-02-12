@@ -109,11 +109,11 @@ function expect-password() {
 ###########
 
 function action_ssh() {
-	local command=""
 	if [ $# != 0 ]; then
-		command=" ${@}"
+		expect-password "ssh -C $ssh_user@$ssh_host ${@}"
+	else
+		expect-password "ssh $ssh_user@$ssh_host"
 	fi
-	expect-password "ssh $ssh_user@$ssh_host$command"
 }
 
 function action_clean() {
