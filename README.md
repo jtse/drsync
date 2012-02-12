@@ -30,6 +30,12 @@ Or to SSH into the sync host:
 drsync ssh
 ```
 
+Or to ```ls``` on the sync host:
+
+```
+drsync ssh ls
+```
+
 Or to clean up the encrypted password file:
 
 ```
