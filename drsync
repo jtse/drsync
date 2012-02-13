@@ -137,6 +137,7 @@ function action_clean() {
 # Main #
 ########
 [ -f ".drsync" ] || config
+[ -d "tmp" ] || mkdir tmp
 
 source .drsync
 get-password
