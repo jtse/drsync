@@ -58,6 +58,7 @@ bash
 ssh
 rsync
 openssl (for local password encryption/decryption)
+expect (yum install expect)
 ```
 
 Of course, you need a running instance of Drupal.
